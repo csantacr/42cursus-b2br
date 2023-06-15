@@ -23,4 +23,7 @@ df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memo
 who -b | awk '$1 == "system" {print $3 " " $4}'
 
 # lvm
-if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi
+if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]
+then echo yes
+else echo no
+fi
