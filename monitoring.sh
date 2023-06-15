@@ -27,3 +27,17 @@ if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]
 then echo yes
 else echo no
 fi
+
+# conexiones tcp
+
+ss -ta | grep ESTAB | wc -l
+
+# usuarios
+users | wc -w
+
+# ip y mac
+hostname -I
+ip link | grep "link/ether" | awk '{print $2}'
+
+# sudo count
+journalctl _COMM=sudo | grep COMMAND | wc -l
