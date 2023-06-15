@@ -15,8 +15,9 @@ free --mega | awk '$1 == "Mem:" {print $3}'
 # disco duro
 df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}'
 
+#[!] pendiente
 # % de uso de la cpu
-vmstat 1 4 | tail -1 | awk '{print %15}'
+# vmstat 1 4 | tail -1 | awk '{print %15}'
 
 # ultimo reinicio
 who -b | awk '$1 == "system" {print $3 " " $4}'
