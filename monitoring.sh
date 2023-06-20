@@ -15,7 +15,7 @@ t_ram=$(free --mega | awk '$1 == "Mem:" {print $2}')
 
 # disco duro
 u_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} END {print u_disk}')
-t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf ("%.1fGb\n"), t_disk/1024}')
+t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf("%d"), t_disk/1024}')
 p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
 
 # % de uso de la cpu
@@ -41,16 +41,15 @@ mac=$(ip link | grep "link/ether" | awk '{print $2}')
 # sudo count
 sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 
-wall "	Architecture: $arch
-	CPU physical : $cpu
-	vCPU : $vcpu
-	Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
-	--Disk Usage: $u_disk/${t_disk}MB ($((u_disk*100/t_disk))%)
-	Disk Usage: $u_disk/${t_disk} ($p_disk%)
-	CPU load: $cpu%
-	Last boot: $lst_boot
-	LVM use: $lvm
-	Connections TCP : $tcp ESTABLISHED
-	User log: $n_usr
-	Network: IP $ip ($mac)
-	Sudo : $sucmd cmd"
+wall "	#Architecture: $arch
+	#CPU physical : $cpu
+	#vCPU : $vcpu
+	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
+	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
+	#CPU load: $cpu%
+	#Last boot: $lst_boot
+	#LVM use: $lvm
+	#Connections TCP : $tcp ESTABLISHED
+	#User log: $n_usr
+	#Network: IP $ip ($mac)
+	#Sudo : $sucmd cmd"
