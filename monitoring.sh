@@ -12,7 +12,6 @@ vcpu=$(grep processor /proc/cpuinfo | wc -l)
 # ram
 u_ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
 t_ram=$(free --mega | awk '$1 == "Mem:" {print $2}')
-p_ram=$(free --mega | awk '$1 == "Mem:" {printf("(%.2f%%)\n", $3/$2*100)}'.)
 
 # disco duro
 disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}')
@@ -44,8 +43,7 @@ sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 wall "	Architecture: $arch
 	CPU physical : $cpu
 	vCPU : $vcpu
-	--Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
-	Memory Usage: $u_ram/${t_ram}MB ($p_ram%)
+	Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
 	Disk Usage: $disk/${disk}MB ($((disk*100/disk))%)
 	CPU load: $cpu%
 	Last boot: $lst_boot
