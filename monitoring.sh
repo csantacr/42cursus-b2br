@@ -41,3 +41,18 @@ ip link | grep "link/ether" | awk '{print $2}'
 
 # sudo count
 journalctl _COMM=sudo | grep COMMAND | wc -l
+
+wall "
+    Architecture: 
+	CPU physical: 
+	vCPU: 
+	Memory Usage: 
+	Disk Usage: 
+	CPU load: 
+	Last boot: 
+	LVM use: 
+	Connections TCP: 
+	User log: 
+	Network: 
+	Sudo:
+    "
