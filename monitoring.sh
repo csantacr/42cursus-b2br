@@ -14,11 +14,12 @@ u_ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
 t_ram=$(free --mega | awk '$1 == "Mem:" {print $2}')
 
 # disco duro
-disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}')
+u_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} END {print u_disk}')
+t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf ("%.1fGb\n"), t_disk/1024}')
+p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
 
-#[!] pendiente
 # % de uso de la cpu
-# vmstat 1 4 | tail -1 | awk '{print %15}'
+vmstat | tail -1 | awk '{print %15}'
 
 # ultimo reinicio
 lst_boot=$(who -b | awk '$1 == "system" {print $3 " " $4}')
@@ -44,7 +45,8 @@ wall "	Architecture: $arch
 	CPU physical : $cpu
 	vCPU : $vcpu
 	Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
-	Disk Usage: $disk/${disk}MB ($((disk*100/disk))%)
+	--Disk Usage: $u_disk/${t_disk}MB ($((u_disk*100/t_disk))%)
+	Disk Usage: $u_disk/${t_disk} ($p_disk%)
 	CPU load: $cpu%
 	Last boot: $lst_boot
 	LVM use: $lvm
