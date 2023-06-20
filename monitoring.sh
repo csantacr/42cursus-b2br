@@ -1,58 +1,53 @@
 #!/bin/bash
 
 # arquitectura y kernel
-uname -a
+arch=$(uname -a)
 
 # nucleos fisicos
-grep "physical id" /proc/cpuinfo | wc -l
+cpu=$(grep "physical id" /proc/cpuinfo | wc -l)
 
 # nucleos virtuales
-grep processor /proc/cpuinfo | wc -l
+vcpu=$(grep processor /proc/cpuinfo | wc -l)
 
 # ram
-free --mega | awk '$1 == "Mem:" {print $3}'
+ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
 
 # disco duro
-df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}'
+disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{memory_use += $3} END {print memory_use}')
 
 #[!] pendiente
 # % de uso de la cpu
 # vmstat 1 4 | tail -1 | awk '{print %15}'
 
 # ultimo reinicio
-who -b | awk '$1 == "system" {print $3 " " $4}'
+lst_boot=$(who -b | awk '$1 == "system" {print $3 " " $4}')
 
 # lvm
-if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]
-then echo yes
-else echo no
-fi
+lvm=(if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ] then echo yes else echo no fi)
 
 # conexiones tcp
 
-ss -ta | grep ESTAB | wc -l
+tcp=$(ss -ta | grep ESTAB | wc -l)
 
 # usuarios
-users | wc -w
+n_usr=$(users | wc -w)
 
 # ip y mac
-hostname -I
-ip link | grep "link/ether" | awk '{print $2}'
+ip=$(hostname -I)
+mac=$(ip link | grep "link/ether" | awk '{print $2}')
 
 # sudo count
-journalctl _COMM=sudo | grep COMMAND | wc -l
+sucmd=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
 
-wall "
-    Architecture: 
-	CPU physical: 
-	vCPU: 
-	Memory Usage: 
-	Disk Usage: 
-	CPU load: 
-	Last boot: 
-	LVM use: 
-	Connections TCP: 
-	User log: 
-	Network: 
-	Sudo:
-    "
+wall "	Architecture: $arch
+	CPU physical : $cpu
+	vCPU : $vcpu
+	Memory Usage: $ram/${ram}MB ($((ram*100/ram))%)
+	Disk Usage: $disk/${disk}MB ($((disk*100/disk))%)
+	CPU load: $cpu%
+	Last boot: $lst_boot
+	LVM use: $lvm
+	Connections TCP : $tcp ESTABLISHED
+	User log: $n_usr
+	Network: IP $ip ($mac)
+	Sudo : $sucmd cmd"
