@@ -37,7 +37,7 @@ ip=$(hostname -I)
 mac=$(ip link | grep "link/ether" | awk '{print $2}')
 
 # sudo count
-sucmd=$(journalctl _COMM=sudo | grep COMMAND | wc -l)
+sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 
 wall "	Architecture: $arch
 	CPU physical : $cpu
