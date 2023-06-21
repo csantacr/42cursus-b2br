@@ -4,10 +4,12 @@
 arch=$(uname -a)
 
 # physical cores
-cores=$(grep "physical id" /proc/cpuinfo | wc -l)
+cores=$(lscpu | grep "Core(s) per socket" | awk '{print $4}')
+sockets=$(lscpu | grep "Socket(s)" | awk '{print $2}')
+# cores=$(grep "physical id" /proc/cpuinfo | wc -l)
 
 # virtual cores
-vcores=$(grep processor /proc/cpuinfo | wc -l)
+vcores=$(nproc)
 
 # ram
 u_ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
@@ -41,7 +43,7 @@ mac=$(ip link | grep "link/ether" | awk '{print $2}')
 sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 
 wall "	#Architecture: $arch
-	#CPU physical : $cores
+	#CPU physical : $($cores*$sockets)
 	#vCPU : $vcores
 	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
 	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
