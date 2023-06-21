@@ -6,7 +6,6 @@ arch=$(uname -a)
 # physical cores
 cores=$(lscpu | grep "Core(s) per socket" | awk '{print $4}')
 sockets=$(lscpu | grep "Socket(s)" | awk '{print $2}')
-# cores=$(grep "physical id" /proc/cpuinfo | wc -l)
 
 # virtual cores
 vcores=$(nproc)
@@ -46,7 +45,8 @@ wall "	#Architecture: $arch
 	#CPU physical : $((cores*sockets))
 	#vCPU : $vcores
 	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
-	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
+	--#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
+	#Disk Usage: $u_disk/$((t_disk/1024))Gb ($((u_disk*100/t_disk))%)
 	#CPU load: $((100-i_cpu))%
 	#Last boot: $lst_boot
 	#LVM use: $lvm
