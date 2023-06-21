@@ -16,8 +16,9 @@ t_ram=$(free --mega | awk '$1 == "Mem:" {print $2}')
 
 # hard disk
 u_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} END {print u_disk}')
-t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf("%d"), t_disk/1024}')
-p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
+t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {print t_disk}')
+# t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf("%d"), t_disk/1024}')
+# p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
 
 # cpu
 i_cpu=$(vmstat 1 2 | tail -1 | awk '{print $15}')
