@@ -43,7 +43,7 @@ mac=$(ip link | grep "link/ether" | awk '{print $2}')
 sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 
 wall "	#Architecture: $arch
-	#CPU physical : $($cores*$sockets)
+	#CPU physical : $((cores*sockets))
 	#vCPU : $vcores
 	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
 	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
