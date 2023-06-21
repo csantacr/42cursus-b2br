@@ -15,7 +15,7 @@ t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {print
 
 i_cpu=$(vmstat 1 2 | tail -1 | awk '{print $15}')
 
-lst_boot=$(who -b | awk '$1 == "system" {print $3 " " $4}')
+lst_boot=$(who -b | awk '{print $3 " " $4}')
 
 lvm=$(if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
 
