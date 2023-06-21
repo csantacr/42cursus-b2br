@@ -44,7 +44,7 @@ wall "	#Architecture: $arch
 	#CPU physical : $cores
 	#vCPU : $vcores
 	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
-	#test:  ($((cores*100))%)
+	#test:  $((cores*100))%
 	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
 	#CPU load: $cpu%
 	#Last boot: $lst_boot
