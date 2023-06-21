@@ -4,10 +4,10 @@
 arch=$(uname -a)
 
 # physical cores
-cpu=$(grep "physical id" /proc/cpuinfo | wc -l)
+cores=$(grep "physical id" /proc/cpuinfo | wc -l)
 
 # virtual cores
-vcpu=$(grep processor /proc/cpuinfo | wc -l)
+vcores=$(grep processor /proc/cpuinfo | wc -l)
 
 # ram
 u_ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
@@ -19,7 +19,7 @@ t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {print
 p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
 
 # cpu
-vmstat | tail -1 | awk '{print %15}'
+i_cpu=$(vmstat 1 2 | tail -1 | awk '{print $15}')
 
 # last boot
 lst_boot=$(who -b | awk '$1 == "system" {print $3 " " $4}')
@@ -41,9 +41,10 @@ mac=$(ip link | grep "link/ether" | awk '{print $2}')
 sucmd=$(journalctl -q _COMM=sudo | grep COMMAND | wc -l)
 
 wall "	#Architecture: $arch
-	#CPU physical : $cpu
-	#vCPU : $vcpu
+	#CPU physical : $cores
+	#vCPU : $vcores
 	#Memory Usage: $u_ram/${t_ram}MB ($((u_ram*100/t_ram))%)
+	#test:  ($((cores*100))%)
 	#Disk Usage: $u_disk/${t_disk}Gb ($p_disk%)
 	#CPU load: $cpu%
 	#Last boot: $lst_boot
