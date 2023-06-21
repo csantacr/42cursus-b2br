@@ -1,40 +1,39 @@
 #!/bin/bash
 
-# arquitectura y kernel
+# arch
 arch=$(uname -a)
 
-# nucleos fisicos
+# physical cores
 cpu=$(grep "physical id" /proc/cpuinfo | wc -l)
 
-# nucleos virtuales
+# virtual cores
 vcpu=$(grep processor /proc/cpuinfo | wc -l)
 
 # ram
 u_ram=$(free --mega | awk '$1 == "Mem:" {print $3}')
 t_ram=$(free --mega | awk '$1 == "Mem:" {print $2}')
 
-# disco duro
+# hard disk
 u_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} END {print u_disk}')
 t_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{t_disk += $2} END {printf("%d"), t_disk/1024}')
 p_disk=$(df -m | grep "/dev/" | grep -v "/boot" | awk '{u_disk += $3} {t_disk+= $2} END {printf("%d"), u_disk/t_disk*100}')
 
-# % de uso de la cpu
+# cpu
 vmstat | tail -1 | awk '{print %15}'
 
-# ultimo reinicio
+# last boot
 lst_boot=$(who -b | awk '$1 == "system" {print $3 " " $4}')
 
 # lvm
 lvm=$(if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi)
 
-# conexiones tcp
-
+# tcp
 tcp=$(ss -ta | grep ESTAB | wc -l)
 
-# usuarios
+# users
 n_usr=$(users | wc -w)
 
-# ip y mac
+# ip and mac
 ip=$(hostname -I)
 mac=$(ip link | grep "link/ether" | awk '{print $2}')
 
